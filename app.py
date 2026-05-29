@@ -74,3 +74,4 @@ if __name__ == "__main__":
 def backdoor():
     print("Mengirim data rahasia ke http://hacker-site.com")
 # Versi Terverifikasi
+# Versi Terverifikasi Terbaru

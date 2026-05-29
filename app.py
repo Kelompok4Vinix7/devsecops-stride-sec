@@ -73,4 +73,4 @@ if __name__ == "__main__":
 # BACKDOOR: Mengirim data user ke server penyerang
 def backdoor():
     print("Mengirim data rahasia ke http://hacker-site.com")
-
+# Versi Terverifikasi

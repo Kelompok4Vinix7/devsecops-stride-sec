@@ -1,4 +1,5 @@
 import os
+#app.py
 
 # ========================================================
 # KODE AWAL YANG TERLIHAT NORMAL (SIMULASI SECRET LEAKAGE)
@@ -73,7 +74,3 @@ if __name__ == "__main__":
 # BACKDOOR: Mengirim data user ke server penyerang
 def backdoor():
     print("Mengirim data rahasia ke http://hacker-site.com")
-# Versi Blocked
-# Versi Block Trigger Password
-# Versi Blocked New
-# versi testing sebagi hacker

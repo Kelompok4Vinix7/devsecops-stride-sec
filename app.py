@@ -52,7 +52,7 @@ if __name__ == "__main__":
     # Jalankan fungsi normal
     connect_to_aws()
     
-    print("--- Aplikasi Selesai ---") SIMULASI SECRET LEAKAGE YANG LEBIH KUAT
+    print("--- Aplikasi Selesai ---") #SIMULASI SECRET LEAKAGE YANG LEBIH KUAT
 
 # Gitleaks akan mendeteksi ini sebagai AWS Access Key (Palsu)
 AWS_ACCESS_KEY_ID = "AKIAIMZAMB1AEXAMPLE1"

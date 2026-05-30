@@ -1,52 +1,54 @@
-name: Mitigasi Artifact Signing
+name: Real Artifact Signing
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  sign-and-verify:
+  sign-and-verify-real-app:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 1. Merakit aplikasi (simulasi)
-      - name: 1. Build Aplikasi Asli
+      # 1. MERAKIT APLIKASI SUNGGUHAN (Real Build)
+      # Membungkus app.py dan requirements.txt menjadi satu paket rilis
+      - name: 1. Package Real Application (Release Bundle)
         run: |
-          echo "Ini adalah rilis resmi dan aman dari Kelompok 4 Vinix7." > aplikasi-resmi.txt
+          echo "[*] Mengemas source code menjadi paket rilis produksi..."
+          tar -czvf aplikasi-produksi-v1.tar.gz app.py requirements.txt
+          echo "[+] Paket rilis berhasil dibuat!"
 
-      # 2. Memasang alat penyegel (Cosign)
+      # 2. Install Cosign
       - name: 2. Install Cosign
         uses: sigstore/cosign-installer@v3.5.0
 
-      # 3. Membuat sepasang kunci (Private & Public)
+      # 3. Buat Kunci Kriptografi
       - name: 3. Buat Kunci Kriptografi (Key-Pair)
         run: |
-          echo "[*] Menghasilkan gembok dan kunci..."
           env COSIGN_PASSWORD=rahasia_vinix cosign generate-key-pair
           
-      # 4. Menstempel aplikasi dengan kunci privat 
-      - name: 4. Tanda Tangani Artifact (Signing)
+      # 4. PENYEGELAN APLIKASI SUNGGUHAN
+      # Sekarang yang disegel adalah file .tar.gz, bukan file .txt buatan
+      - name: 4. Tanda Tangani Release Bundle (Artifact Signing)
         run: |
-          echo "[*] Menyegel aplikasi dengan Cosign..."
-          env COSIGN_PASSWORD=rahasia_vinix COSIGN_YES=true cosign sign-blob --tlog-upload=false --key cosign.key aplikasi-resmi.txt > aplikasi-resmi.sig
-          echo "[+] File .sig berhasil dibuat!"
+          echo "[*] Menyegel paket produksi dengan Cosign..."
+          env COSIGN_PASSWORD=rahasia_vinix COSIGN_YES=true cosign sign-blob --tlog-upload=false --key cosign.key aplikasi-produksi-v1.tar.gz > aplikasi-produksi-v1.sig
+          echo "[+] Paket produksi telah disertifikasi!"
 
-      # 5. Simulasi Pengecekan (DIPERBAIKI)
-      # Menambahkan --insecure-ignore-tlog agar tidak mencari log di internet
-      - name: 5. Verifikasi Segel Digital
+      # 5. Verifikasi Keamanan Paket
+      - name: 5. Verifikasi Keaslian Bundle
         run: |
-          echo "[*] Mengecek keaslian aplikasi..."
-          cosign verify-blob --insecure-ignore-tlog --key cosign.pub --signature aplikasi-resmi.sig aplikasi-resmi.txt
-          echo "[+] VERIFIKASI BERHASIL! File asli belum dimanipulasi oleh pihak ketiga."
+          echo "[*] Mengecek integritas paket aplikasi..."
+          cosign verify-blob --insecure-ignore-tlog --key cosign.pub --signature aplikasi-produksi-v1.sig aplikasi-produksi-v1.tar.gz
+          echo "[+] AMAN: Paket produksi valid dan tidak dimanipulasi!"
 
-      # 6. Menyimpan hasil agar bisa diunduh
-      - name: 6. Upload Hasil Tersertifikasi
+      # 6. Upload untuk di-deploy ke Server
+      - name: 6. Upload Final Production Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: rilis-tersertifikasi
+          name: rilis-produksi-final
           path: |
-            aplikasi-resmi.txt
-            aplikasi-resmi.sig
+            aplikasi-produksi-v1.tar.gz
+            aplikasi-produksi-v1.sig
             cosign.pub

@@ -6,6 +6,12 @@ import os
 # ========================================================
 
 # Gitleaks tetap akan mendeteksi kunci palsu ini
+
+
+# Ini adalah dependensi yang sudah terinfeksi malware
+import fake_logger
+
+fake_logger.log_info("Aplikasi dimulai...")
 AWS_ACCESS_KEY_ID = "AKIAIMZAMB1AEXAMPLE1"
 AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
 

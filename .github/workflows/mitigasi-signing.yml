@@ -26,18 +26,19 @@ jobs:
           echo "[*] Menghasilkan gembok dan kunci..."
           env COSIGN_PASSWORD=rahasia_vinix cosign generate-key-pair
           
-      # 4. Menstempel aplikasi dengan kunci privat (PENAMBAHAN COSIGN_YES=true)
+      # 4. Menstempel aplikasi dengan kunci privat 
       - name: 4. Tanda Tangani Artifact (Signing)
         run: |
           echo "[*] Menyegel aplikasi dengan Cosign..."
           env COSIGN_PASSWORD=rahasia_vinix COSIGN_YES=true cosign sign-blob --tlog-upload=false --key cosign.key aplikasi-resmi.txt > aplikasi-resmi.sig
           echo "[+] File .sig berhasil dibuat!"
 
-      # 5. Simulasi Pengecekan (Sistem membuktikan file aman)
+      # 5. Simulasi Pengecekan (DIPERBAIKI)
+      # Menambahkan --insecure-ignore-tlog agar tidak mencari log di internet
       - name: 5. Verifikasi Segel Digital
         run: |
           echo "[*] Mengecek keaslian aplikasi..."
-          cosign verify-blob --key cosign.pub --signature aplikasi-resmi.sig aplikasi-resmi.txt
+          cosign verify-blob --insecure-ignore-tlog --key cosign.pub --signature aplikasi-resmi.sig aplikasi-resmi.txt
           echo "[+] VERIFIKASI BERHASIL! File asli belum dimanipulasi oleh pihak ketiga."
 
       # 6. Menyimpan hasil agar bisa diunduh

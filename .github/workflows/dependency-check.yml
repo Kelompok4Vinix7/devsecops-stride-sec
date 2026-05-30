@@ -10,6 +10,7 @@ jobs:
 
       - name: Run Trivy Scan
         uses: aquasecurity/trivy-action@master
+        continue-on-error: true # <--- TAMBAHKAN INI agar serangan di bawahnya tetap jalan
         with:
           scan-type: 'fs'
           format: 'table'

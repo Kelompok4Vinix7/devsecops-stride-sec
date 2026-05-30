@@ -3,22 +3,28 @@
 import os
 
 # ========================================================
-# KODE AWAL YANG TERLIHAT NORMAL (SIMULASI SECRET LEAKAGE)
+# 1. SIMULASI SECRET LEAKAGE (KREDENSIAL HARDCODED)
 # ========================================================
-
-# Gitleaks tetap akan mendeteksi kunci palsu ini
+# Pemindai keamanan (seperti Gitleaks) akan mendeteksi variabel ini
 
 AWS_ACCESS_KEY_ID = "AKIAIMZAMB1AEXAMPLE1"
 AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-
-def connect_to_aws():
-    """Fungsi normal untuk menghubungkan ke AWS."""
-    print("[*] Menghubungkan ke layanan AWS dengan kunci akses...")
-    # Dalam kode nyata, di sini akan ada logika koneksi
-    print("[+] Berhasil terhubung ke AWS.")
+DATABASE_URL = "postgres://admin:p4ssw0rd_rahasia_banget@db.example.com:5432/mydb"
+API_KEY = "AIzaSyA-ContohApiKeyGCP-12345"
 
 # ========================================================
-# KODE YANG DISISIPKAN PENYERANG (SIMULASI BACKDOOR)
+# 2. FUNGSI NORMAL APLIKASI
+# ========================================================
+
+def connect_to_services():
+    """Fungsi normal untuk menghubungkan aplikasi ke layanan cloud dan database."""
+    print("[*] Menghubungkan ke layanan AWS dengan kunci akses...")
+    print("[*] Menghubungkan ke database internal...")
+    # Dalam aplikasi nyata, logika koneksi berada di sini
+    print("[+] Berhasil terhubung ke semua layanan.")
+
+# ========================================================
+# 3. KODE YANG DISISIPKAN PENYERANG (SIMULASI BACKDOOR)
 # ========================================================
 
 def _hidden_malicious_activity():
@@ -28,51 +34,27 @@ def _hidden_malicious_activity():
     """
     target_url = "http://hacker-site.com/steal-data"
     print(f"\n[!] PERINGATAN KEAMANAN: Backdoor Aktif!")
-    print(f"[!] Mengambil data kredensial AWS...")
-    print(f"[!] Mengirim Kunci Akses '{AWS_ACCESS_KEY_ID}' ke {target_url}...")
-    # Dalam serangan nyata, kode ini akan melakukan HTTP Request (misal pakai library requests)
-    # untuk mengirim data ke server penyerang secara diam-diam.
+    print(f"[!] Mengambil data kredensial rahasia...")
+    
+    # Mencuri rahasia yang bocor di atas
+    print(f"[!] Mengirim Kunci AWS '{AWS_ACCESS_KEY_ID}' ke {target_url}...")
+    print(f"[!] Mengirim API Key '{API_KEY}' ke {target_url}...")
+    
+    # Dalam serangan nyata, library seperti 'requests' akan mengirimkan data secara diam-diam
     print("[!] Pengiriman data selesai. Jejak dihapus.\n")
 
 # ========================================================
-# LOGIKA UTAMA APLIKASI
+# 4. LOGIKA UTAMA APLIKASI
 # ========================================================
 
 if __name__ == "__main__":
-    print("--- Memulai Aplikasi Kelompok 4 Vinix ---")
+    print("--- Memulai Aplikasi Kelompok 4 Vinix7 ---")
     
     # Penyerang menyisipkan panggilan fungsi jahat di sini,
     # tepat sebelum fungsi normal dijalankan, agar tidak dicurigai.
     _hidden_malicious_activity()
     
-    # Jalankan fungsi normal
-    connect_to_aws()
+    # Jalankan fungsi normal aplikasi
+    connect_to_services()
     
-    print("--- Aplikasi Selesai ---") #SIMULASI SECRET LEAKAGE YANG LEBIH KUAT
-
-# Gitleaks akan mendeteksi ini sebagai AWS Access Key (Palsu)
-AWS_ACCESS_KEY_ID = "AKIAIMZAMB1AEXAMPLE1"
-AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-
-# Gitleaks juga sensitif terhadap pola "Key" yang panjang
-DATABASE_URL = "postgres://admin:p4ssw0rd_rahasia_banget@db.example.com:5432/mydb"
-
-def connect():
-    print("Menghubungkan ke AWS...")
-
-if __name__ == "__main__":
-    connect()# SIMULASI SECRET LEAKAGE
-# Ini adalah contoh kode yang menyimpan kredensial secara hardcoded
-
-DB_PASSWORD = "super-secret-password-123"
-API_KEY = "AIzaSyA-ContohApiKeyGCP-12345"
-
-def login():
-    print(f"Menghubungkan ke database dengan password: {DB_PASSWORD}")
-
-if __name__ == "__main__":
-    login()
-
-# BACKDOOR: Mengirim data user ke server penyerang
-def backdoor():
-    print("Mengirim data rahasia ke http://hacker-site.com")
+    print("--- Aplikasi Selesai ---")

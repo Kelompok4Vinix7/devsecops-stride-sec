@@ -15,3 +15,14 @@ jobs:
           format: 'table'
           exit-code: '1' # GAGALKAN pipeline jika ditemukan celah High/Critical
           severity: 'CRITICAL,HIGH'
+
+      - name: Attack - Malicious Actor Trying to Modify Repo
+        run: |
+          echo "Penyerang mencoba menyisipkan file backdoor via Pipeline..."
+          git config --global user.email "hacker@evil.com"
+          git config --global user.name "Hacker Inside Pipeline"
+          echo "malicious_content" > backdoor_via_pipeline.txt
+          git add backdoor_via_pipeline.txt
+          git commit -m "Attacking from Inside"
+          # Jika token memiliki izin WRITE, perintah push di bawah ini akan BERHASIL
+          git push origin main

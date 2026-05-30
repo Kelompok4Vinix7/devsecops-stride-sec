@@ -5,6 +5,8 @@ import os
 # KODE AWAL YANG TERLIHAT NORMAL (SIMULASI SECRET LEAKAGE)
 # ========================================================
 
+#belum ada library chain attack
+
 # Gitleaks tetap akan mendeteksi kunci palsu ini
 
 AWS_ACCESS_KEY_ID = "AKIAIMZAMB1AEXAMPLE1"

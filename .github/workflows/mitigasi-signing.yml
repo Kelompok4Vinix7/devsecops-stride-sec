@@ -12,21 +12,21 @@ jobs:
         uses: actions/checkout@v4
 
       # 1. Merakit Aplikasi
-      - name: 1. Package Real Application (Release Bundle)
+      - name: "1. Package Real Application (Release Bundle)"
         run: |
           tar -czvf aplikasi-produksi-v1.tar.gz app.py requirements.txt
 
       # 2. Install Cosign
-      - name: 2. Install Cosign
+      - name: "2. Install Cosign"
         uses: sigstore/cosign-installer@v3.5.0
 
       # 3. Buat Kunci Kriptografi
-      - name: 3. Buat Kunci Kriptografi (Key-Pair)
+      - name: "3. Buat Kunci Kriptografi (Key-Pair)"
         run: |
           env COSIGN_PASSWORD=rahasia_vinix cosign generate-key-pair
           
       # 4. PENYEGELAN (Sistem merilis aplikasi dengan aman)
-      - name: 4. Tanda Tangani Release Bundle
+      - name: "4. Tanda Tangani Release Bundle"
         run: |
           env COSIGN_PASSWORD=rahasia_vinix COSIGN_YES=true cosign sign-blob --tlog-upload=false --key cosign.key aplikasi-produksi-v1.tar.gz > aplikasi-produksi-v1.sig
           echo "[+] Paket produksi telah disegel resmi!"
@@ -35,7 +35,7 @@ jobs:
       # 🚨 SIMULASI SERANGAN TAMPERING OLEH HACKER 🚨
       # Hacker mencegat paket di tengah jalan, membongkarnya, dan menyuntikkan malware
       # ========================================================
-      - name: 🚨 HACKER ATTACK: Injecting Malware ke dalam Paket
+      - name: "🚨 HACKER ATTACK: Injecting Malware ke dalam Paket"
         run: |
           echo "[!] PENYUSUPAN BERHASIL..."
           echo "[!] Hacker mengekstrak paket aplikasi asli..."
@@ -50,14 +50,14 @@ jobs:
 
       # 5. PEMBUKTIAN MITIGASI (Sistem mengecek sebelum menjalankan aplikasi)
       # Langkah ini HARUS GAGAL dan berwarna MERAH karena isi paket sudah diubah hacker
-      - name: 5. Verifikasi Keaslian Bundle
+      - name: "5. Verifikasi Keaslian Bundle"
         run: |
           echo "[*] Mengecek integritas paket aplikasi..."
           cosign verify-blob --insecure-ignore-tlog --key cosign.pub --signature aplikasi-produksi-v1.sig aplikasi-produksi-v1.tar.gz
           echo "[+] AMAN: Paket produksi valid dan tidak dimanipulasi!"
 
       # 6. Upload
-      - name: 6. Upload Final Production Artifact
+      - name: "6. Upload Final Production Artifact"
         uses: actions/upload-artifact@v4
         with:
           name: rilis-produksi-final

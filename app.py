@@ -2,14 +2,9 @@
 
 import os
 
-# Developer mengimpor library ini dengan asumsi aman
-import pustaka_eksternal 
-
 # ========================================================
 # KODE AWAL YANG TERLIHAT NORMAL (SIMULASI SECRET LEAKAGE)
 # ========================================================
-
-#belum ada library chain attack
 
 # Gitleaks tetap akan mendeteksi kunci palsu ini
 

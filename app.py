@@ -75,3 +75,4 @@ def backdoor():
     print("Mengirim data rahasia ke http://hacker-site.com")
 # Versi Blocked
 # Versi Block Trigger Password
+# Versi Blocked New

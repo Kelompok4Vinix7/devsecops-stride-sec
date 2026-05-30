@@ -1,7 +1,18 @@
-import os
-import fake_logger
+# app.py
 
-#app.py
+import os
+
+# Developer mengimpor library ini dengan asumsi aman
+import pustaka_eksternal 
+
+print("--- Memulai Proses Build CI/CD ---")
+print("[*] Menjalankan fungsi dari library eksternal...")
+
+# Menggunakan fungsi normal dari library
+hasil = pustaka_eksternal.hitung_data()
+
+print(f"[+] Output: {hasil}")
+print("--- Build Selesai ---")
 
 # ========================================================
 # KODE AWAL YANG TERLIHAT NORMAL (SIMULASI SECRET LEAKAGE)
